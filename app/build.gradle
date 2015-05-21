@@ -5,7 +5,7 @@ android {
     buildToolsVersion '22.0.1'
     defaultConfig {
         applicationId "com.justdoit.sharebook"
-        minSdkVersion 10
+        minSdkVersion 11
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -22,5 +22,4 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:22.1.1'
 }
