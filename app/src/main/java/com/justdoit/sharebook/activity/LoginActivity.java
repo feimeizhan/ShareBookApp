@@ -3,15 +3,20 @@ package com.justdoit.sharebook.activity;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.justdoit.sharebook.R;
+import com.justdoit.sharebook.entity.HttpConstant;
+import com.justdoit.sharebook.util.HttpUtil;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements View.OnClickListener{
 
     private Button loginButton;
     private Button registButton;
@@ -19,10 +24,15 @@ public class LoginActivity extends Activity {
     private EditText usernameETx;
     private EditText passwdETx;
 
+    private final String TAG = "LOGIN_ACTIVITY";
+
+    private String params = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        init();
     }
 
     public void init() {
@@ -33,6 +43,9 @@ public class LoginActivity extends Activity {
 
         loginButton = (Button) findViewById(R.id.loginBtn);
         registButton = (Button) findViewById(R.id.registBtn);
+
+        loginButton.setOnClickListener(this);
+        registButton.setOnClickListener(this);
     }
 
     @Override
@@ -57,7 +70,58 @@ public class LoginActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.loginBtn:
+                if (checkAndSetParams()) {
+//                    Log.e(TAG, params);
+                    new loginTask().execute(HttpConstant.LOGIN_URL, params);
+                }
+                break;
+            case R.id.registBtn:
+                break;
+        }
+    }
+
+    /**
+     * 检测用户名和密码是否为空
+     * @return true表示都非空
+     */
+    public boolean checkAndSetParams() {
+        if (!"".equals(usernameETx.getText().toString().trim())){
+            params = "username=" + usernameETx.getText().toString().trim();
+
+            if (!"".equals(passwdETx.getText().toString())) {
+                params += HttpConstant.SEPARATOR + "passwd=" + passwdETx.getText().toString();
+
+                return true;
+            }else {
+                Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
+            }
+        }else {
+            Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
+        }
+
+        return false;
+
+    }
+
+    /**
+     * 传递两个参数，第一个是网址，第二个是传递的数据
+     */
     public class loginTask extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(LoginActivity.this, "正在登录", Toast.LENGTH_SHORT).show();
+        }
 
         /**
          * Override this method to perform a computation on a background thread. The
@@ -73,9 +137,17 @@ public class LoginActivity extends Activity {
          * @see #onPostExecute
          * @see #publishProgress
          */
+
+
         @Override
         protected String doInBackground(String... params) {
-            return null;
+            return HttpUtil.HttpPostStr(LoginActivity.this, params[0], params[1]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            testTv.setText(s);
         }
     }
 }

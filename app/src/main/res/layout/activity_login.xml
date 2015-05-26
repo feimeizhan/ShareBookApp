@@ -10,7 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="@string/usernameTx"
         android:ems="10"
         android:id="@+id/usernameETx"
         android:layout_alignParentTop="true"
@@ -21,7 +20,8 @@
         android:layout_marginLeft="@dimen/textview_horizontal_margin"
         android:layout_marginTop="@dimen/textview_vertical_margin"
         android:layout_marginRight="@dimen/textview_horizontal_margin"
-        android:layout_marginBottom="@dimen/textview_vertical_margin" />
+        android:layout_marginBottom="@dimen/textview_vertical_margin"
+        android:hint="@string/usernameTx" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -34,7 +34,8 @@
         android:layout_alignStart="@+id/usernameETx"
         android:layout_alignRight="@+id/usernameETx"
         android:layout_alignEnd="@+id/usernameETx"
-        android:text="@string/passwordTx" />
+        android:autoText="false"
+        android:hint="@string/passwordTx" />
 
     <Button
         android:layout_width="wrap_content"
