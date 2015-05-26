@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,13 +29,13 @@ public class HttpUtil {
     private static final int MAX_SIZE_BUF = 1024;
 
     /**
-     * 发送post请求，返回字符串结果
+     * 发送login post请求，返回字符串结果
      * @param context
      * @param urlStr 网址字符串
-     * @param postStr 传递数据字符串
+     * @param postStr 传递数据字符串(username&passwd)
      * @return 处理结果字符串
      */
-    public static String HttpPostStr(Context context, String urlStr, String postStr) {
+    public static String login(Context context, String urlStr, String postStr) {
 
         String result = null;
 
@@ -60,6 +61,9 @@ public class HttpUtil {
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 InputStream in = new BufferedInputStream(connection.getInputStream());
                 result = new String(getBytesFromInputStream(in));
+                for (HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
+                    Log.e(TAG, "Name-->" + cookie.getName() + " value-->" + cookie.getValue());
+                }
 //                Log.e(TAG, result);
                 in.close();
             }

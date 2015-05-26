@@ -141,7 +141,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         @Override
         protected String doInBackground(String... params) {
-            return HttpUtil.HttpPostStr(LoginActivity.this, params[0], params[1]);
+            return HttpUtil.login(LoginActivity.this, params[0], params[1]);
         }
 
         @Override
