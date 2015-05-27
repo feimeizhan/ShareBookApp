@@ -1,0 +1,33 @@
+package com.justdoit.sharebook.util;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import java.net.NetworkInterface;
+
+/**
+ * 获取系统状态工具
+ * Created by ljz on 2015/5/26.
+ */
+public class SystemStateUtil {
+
+    public SystemStateUtil(){
+
+    }
+
+    public SystemStateUtil getSystemStateUtil (){
+        return new SystemStateUtil();
+    }
+
+    public static boolean isWifi(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+        if(activeNetInfo != null & activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI){
+            return true;
+        }
+        return false;
+    }
+}
+
