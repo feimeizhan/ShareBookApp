@@ -3,7 +3,6 @@ package com.justdoit.sharebook.activity;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.justdoit.sharebook.R;
-import com.justdoit.sharebook.entity.HttpConstant;
+import com.justdoit.sharebook.application.HttpConstant;
 import com.justdoit.sharebook.util.HttpUtil;
 
 public class LoginActivity extends Activity implements View.OnClickListener{

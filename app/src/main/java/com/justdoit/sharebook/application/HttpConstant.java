@@ -1,4 +1,4 @@
-package com.justdoit.sharebook.entity;
+package com.justdoit.sharebook.application;
 
 /**
  * 网址常量

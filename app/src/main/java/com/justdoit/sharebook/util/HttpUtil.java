@@ -1,6 +1,7 @@
 package com.justdoit.sharebook.util;
 
 import android.content.Context;
+import android.util.ArrayMap;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -12,10 +13,16 @@ import java.io.OutputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 网络操作工具
@@ -136,5 +143,56 @@ public class HttpUtil {
     private static void init() {
         cookieManager = new CookieManager(null, CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
+    }
+
+    public class ShareCookieStore implements CookieStore{
+        private Map<URI, List<HttpCookie>> map = new HashMap<URI, List<HttpCookie>>();
+
+        @Override
+        public void add(URI uri, HttpCookie cookie) {
+            List<HttpCookie> cookies = map.get(uri);
+            if (cookies == null) {
+                cookies = new ArrayList<HttpCookie>();
+                map.put(uri, cookies);
+            }
+
+            cookies.add(cookie);
+        }
+
+        @Override
+        public List<HttpCookie> get(URI uri) {
+            return map.get(uri);
+        }
+
+        @Override
+        public List<HttpCookie> getCookies() {
+            List<HttpCookie> result = new ArrayList<HttpCookie>();
+
+            for (List<HttpCookie> cookie : map.values()) {
+                result.addAll(cookie);
+            }
+            return result;
+        }
+
+        @Override
+        public List<URI> getURIs() {
+            return new ArrayList<URI>(map.keySet());
+        }
+
+        @Override
+        public boolean remove(URI uri, HttpCookie cookie) {
+            List<HttpCookie> cookies = map.get(uri);
+            if (cookies == null) {
+                return false;
+            }
+            cookies.remove(cookie);
+            return true;
+        }
+
+        @Override
+        public boolean removeAll() {
+            map.clear();
+            return true;
+        }
     }
 }

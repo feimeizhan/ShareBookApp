@@ -1,4 +1,4 @@
-package com.justdoit.sharebook.util;
+package com.justdoit.sharebook.application;
 
 import android.app.Application;
 
@@ -7,4 +7,9 @@ import android.app.Application;
  * Created by feimei.zhan on 2015/5/26.
  */
 public class MyApp extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
 }
