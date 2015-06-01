@@ -8,6 +8,16 @@ import android.app.Application;
  */
 public class MyApp extends Application {
 
+    private boolean isLogin = false;
+
+    public boolean isLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(boolean isLogin) {
+        this.isLogin = isLogin;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

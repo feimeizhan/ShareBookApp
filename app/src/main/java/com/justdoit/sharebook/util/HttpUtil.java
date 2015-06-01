@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.justdoit.sharebook.application.MyApp;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -115,6 +117,9 @@ public class HttpUtil {
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 InputStream in = new BufferedInputStream(connection.getInputStream());
                 result = new String(getBytesFromInputStream(in));
+
+                MyApp myApp = (MyApp)context.getApplicationContext();
+                myApp.setIsLogin(true);
 
                 sharedPreferences = context.getSharedPreferences(COOKIE_STORE_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();

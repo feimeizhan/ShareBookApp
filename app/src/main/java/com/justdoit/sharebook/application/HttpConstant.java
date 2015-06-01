@@ -10,4 +10,5 @@ public class HttpConstant {
     public final static String ROOT_URL = "http://scaubook.sinaapp.com";
     public final static String LOGIN_URL = ROOT_URL + SLASH + "login";
     public final static String REGIST_URL = ROOT_URL + SLASH + "regist";
+    public final static String ADD_BOOK_URL = ROOT_URL + SLASH + "addbook";
 }
