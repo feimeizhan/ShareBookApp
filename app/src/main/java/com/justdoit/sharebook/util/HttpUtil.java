@@ -141,58 +141,45 @@ public class HttpUtil {
      * 初始化CookieManager
      */
     private static void init() {
-        cookieManager = new CookieManager(null, CookiePolicy.ACCEPT_ALL);
+        cookieManager = new CookieManager(new PersistentCookieStore(), CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
     }
 
-    public class ShareCookieStore implements CookieStore{
-        private Map<URI, List<HttpCookie>> map = new HashMap<URI, List<HttpCookie>>();
+    public static class PersistentCookieStore implements CookieStore {
+        private CookieStore cookieStore;
+
+        public PersistentCookieStore() {
+            cookieStore = new CookieManager().getCookieStore();
+        }
 
         @Override
         public void add(URI uri, HttpCookie cookie) {
-            List<HttpCookie> cookies = map.get(uri);
-            if (cookies == null) {
-                cookies = new ArrayList<HttpCookie>();
-                map.put(uri, cookies);
-            }
-
-            cookies.add(cookie);
+            cookieStore.add(uri, cookie);
         }
 
         @Override
         public List<HttpCookie> get(URI uri) {
-            return map.get(uri);
+            return cookieStore.get(uri);
         }
 
         @Override
         public List<HttpCookie> getCookies() {
-            List<HttpCookie> result = new ArrayList<HttpCookie>();
-
-            for (List<HttpCookie> cookie : map.values()) {
-                result.addAll(cookie);
-            }
-            return result;
+            return cookieStore.getCookies();
         }
 
         @Override
         public List<URI> getURIs() {
-            return new ArrayList<URI>(map.keySet());
+            return cookieStore.getURIs();
         }
 
         @Override
         public boolean remove(URI uri, HttpCookie cookie) {
-            List<HttpCookie> cookies = map.get(uri);
-            if (cookies == null) {
-                return false;
-            }
-            cookies.remove(cookie);
-            return true;
+            return cookieStore.remove(uri, cookie);
         }
 
         @Override
         public boolean removeAll() {
-            map.clear();
-            return true;
+            return cookieStore.removeAll();
         }
     }
 }
