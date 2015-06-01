@@ -32,7 +32,7 @@ public class HttpUtil {
     private static CookieManager cookieManager;
     private static SharedPreferences sharedPreferences;
     private static final String COOKIE_STORE_NAME = "userInfoPrefs";
-    private static String token;
+    private static String token = null;
     private static final String tokenKey = "_xsrf";
     private static final int MAX_SIZE_BUF = 1024;
 
@@ -55,6 +55,7 @@ public class HttpUtil {
             connection.setUseCaches(false);
 
             connection.connect();
+            Log.e(TAG, connection.getResponseMessage());
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 InputStream in = new BufferedInputStream(connection.getInputStream());
                 result = new String(getBytesFromInputStream(in));
@@ -173,22 +174,35 @@ public class HttpUtil {
      * @param url 被获取token的网站
      */
     public static void initToken(URL url) {
-        try {
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                for (String cookie : connection.getHeaderFields().get("Set-Cookie")) {
-                    if (cookie.indexOf(tokenKey) == 0) {
-                        token = cookie.substring(0, cookie.indexOf(";"));
-                    }
+        try {
+            for (HttpCookie cookie : cookieManager.getCookieStore().get(url.toURI())) {
+                if (tokenKey.equals(cookie.getName())) {
+                    token = tokenKey + "=" + cookie.getValue();
+                    break;
                 }
-            }else {
-                token = null;
+            }
+
+            if (token == null) {
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    for (String cookie : connection.getHeaderFields().get("Set-Cookie")) {
+                        if (cookie.indexOf(tokenKey) == 0) {
+                            token = cookie.substring(0, cookie.indexOf(";"));
+                        }
+                    }
+                } else {
+                    token = null;
+                }
             }
 
         } catch (IOException e) {
             e.printStackTrace();
             Log.e(TAG, "openConnection() failed");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "url.toURI() failed");
         }
 
     }
