@@ -213,6 +213,8 @@ public class HttpUtil {
     }
 
     /**
+     * 每次http get或者post在openConnection之前
+     * 都需要使用该方法
      * 如果cookiemanager为空，初始化CookieManager
      */
     private static void init(Context context, URI uri) {
