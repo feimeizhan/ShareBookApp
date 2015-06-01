@@ -84,6 +84,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 }
                 break;
             case R.id.registBtn:
+                new openMainTask().execute(HttpConstant.ROOT_URL);
                 break;
         }
     }
@@ -109,6 +110,19 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         return false;
 
+    }
+
+    public class openMainTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            return HttpUtil.HttpGET(LoginActivity.this, params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            testTv.setText(s);
+        }
     }
 
     /**

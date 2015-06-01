@@ -36,6 +36,51 @@ public class HttpUtil {
     private static final String tokenKey = "_xsrf";
     private static final int MAX_SIZE_BUF = 1024;
 
+
+    /**
+     * 封装HTTP GET 方法
+     * @param context
+     * @param urlStr 网址
+     * @return get的结果字符串
+     */
+    public static String HttpGET(Context context, String urlStr) {
+        String result = null;
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(urlStr);
+            init(context, url.toURI());
+
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setUseCaches(false);
+
+            connection.connect();
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                InputStream in = new BufferedInputStream(connection.getInputStream());
+                result = new String(getBytesFromInputStream(in));
+                in.close();
+            }
+
+            connection.disconnect();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            Log.e(TAG, "new URL() failed");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "url.toURI() failed");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, "url.openConnection() failed");
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+
+        return result;
+    }
+
     /**
      * 发送login post请求，返回字符串结果
      * @param context
@@ -153,6 +198,7 @@ public class HttpUtil {
      */
     private static void init(Context context, URI uri) {
         if (cookieManager == null) {
+            Log.e(TAG, "cookieManager is null");
             cookieManager = new CookieManager(new PersistentCookieStore(context, uri), CookiePolicy.ACCEPT_ALL);
             CookieHandler.setDefault(cookieManager);
         }
