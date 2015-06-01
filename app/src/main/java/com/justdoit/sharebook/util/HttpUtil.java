@@ -1,7 +1,7 @@
 package com.justdoit.sharebook.util;
 
 import android.content.Context;
-import android.util.ArrayMap;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -18,9 +18,8 @@ import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +30,8 @@ import java.util.Map;
 public class HttpUtil {
     private static final String TAG = "HTTP_UTIL";
     private static CookieManager cookieManager;
+    private static SharedPreferences sharedPreferences;
+    private static final String COOKIE_STORE_NAME = "userInfoPrefs";
     private static String token;
     private static final String tokenKey = "_xsrf";
     private static final int MAX_SIZE_BUF = 1024;
@@ -48,7 +49,7 @@ public class HttpUtil {
 
         try {
             URL url = new URL(urlStr);
-            init();
+            init(context, url.toURI());
             initToken(url);
 
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -68,9 +69,16 @@ public class HttpUtil {
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 InputStream in = new BufferedInputStream(connection.getInputStream());
                 result = new String(getBytesFromInputStream(in));
+
+                sharedPreferences = context.getSharedPreferences(COOKIE_STORE_NAME, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
                 for (HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
                     Log.e(TAG, "Name-->" + cookie.getName() + " value-->" + cookie.getValue());
+                    editor.putString(cookie.getName(), cookie.getValue());
                 }
+
+                editor.commit();
 //                Log.e(TAG, result);
                 in.close();
             }
@@ -82,6 +90,9 @@ public class HttpUtil {
         } catch (IOException e) {
             e.printStackTrace();
             Log.e(TAG, "url.openConnection() failed");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            Log.e(TAG, "url to uri failed");
         }
 
         return result;
@@ -138,18 +149,30 @@ public class HttpUtil {
     }
 
     /**
-     * 初始化CookieManager
+     * 如果cookiemanager为空，初始化CookieManager
      */
-    private static void init() {
-        cookieManager = new CookieManager(new PersistentCookieStore(), CookiePolicy.ACCEPT_ALL);
-        CookieHandler.setDefault(cookieManager);
+    private static void init(Context context, URI uri) {
+        if (cookieManager == null) {
+            cookieManager = new CookieManager(new PersistentCookieStore(context, uri), CookiePolicy.ACCEPT_ALL);
+            CookieHandler.setDefault(cookieManager);
+        }
     }
 
+    /**
+     * 保存用户登录cookie的自定义cookiestore
+     */
     public static class PersistentCookieStore implements CookieStore {
         private CookieStore cookieStore;
 
-        public PersistentCookieStore() {
+        public PersistentCookieStore(Context context, URI uri) {
             cookieStore = new CookieManager().getCookieStore();
+
+            SharedPreferences sp = context.getSharedPreferences(COOKIE_STORE_NAME, Context.MODE_PRIVATE);
+
+            for (Map.Entry<String, ?> entry : sp.getAll().entrySet()) {
+                HttpCookie cookie = new HttpCookie(entry.getKey(), (String) entry.getValue());
+                cookieStore.add(uri, cookie);
+            }
         }
 
         @Override
