@@ -230,7 +230,7 @@ public class HttpUtil {
             SharedPreferences sp = context.getSharedPreferences(COOKIE_STORE_NAME, Context.MODE_PRIVATE);
 
             for (Map.Entry<String, ?> entry : sp.getAll().entrySet()) {
-                HttpCookie cookie = new HttpCookie(entry.getKey(), (String) entry.getValue());
+                HttpCookie cookie = new HttpCookie(entry.getKey(), String.valueOf(entry.getValue()));
                 cookieStore.add(uri, cookie);
             }
         }
