@@ -42,7 +42,7 @@ public class RegistActivityFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_regist, container, false);
 
-        registBtn = (Button) view.findViewById(R.id.regist_registBtn);
+        registBtn = (Button) view.findViewById(R.id.registBtn);
         usernameETx = (EditText) view.findViewById(R.id.regist_usernameETx);
         passwdETx = (EditText) view.findViewById(R.id.regist_passwdETx);
         confirmPasswdETx = (EditText) view.findViewById(R.id.regist_confirm_passwdETx);
@@ -56,7 +56,7 @@ public class RegistActivityFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.regist_registBtn:
+            case R.id.registBtn:
                 if (checkLegal()) {
                     new registTask().execute(HttpConstant.REGIST_URL, postStr);
                 }
