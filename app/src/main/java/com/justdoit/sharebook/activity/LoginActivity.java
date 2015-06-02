@@ -41,7 +41,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         passwdETx = (EditText) findViewById(R.id.passwdETx);
 
         loginButton = (Button) findViewById(R.id.loginBtn);
-        registButton = (Button) findViewById(R.id.registBtn);
+        registButton = (Button) findViewById(R.id.regist_registBtn);
 
         loginButton.setOnClickListener(this);
         registButton.setOnClickListener(this);
@@ -83,7 +83,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     new loginTask().execute(HttpConstant.LOGIN_URL, params);
                 }
                 break;
-            case R.id.registBtn:
+            case R.id.regist_registBtn:
                 new openMainTask().execute(HttpConstant.ROOT_URL);
                 break;
         }

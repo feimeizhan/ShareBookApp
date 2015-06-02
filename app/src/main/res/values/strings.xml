@@ -9,4 +9,6 @@
     <string name="loginTx">登录</string>
     <string name="registTx">注册</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_regist">注册</string>
+    <string name="confirm_passwdTx">确认密码</string>
 </resources>

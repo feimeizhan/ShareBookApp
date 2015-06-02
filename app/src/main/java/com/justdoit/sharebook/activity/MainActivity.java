@@ -73,6 +73,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 }
                 break;
             case R.id.main_regist_btn:
+                Intent intent = new Intent(MainActivity.this, RegistActivity.class);
+                startActivity(intent);
                 break;
         }
     }

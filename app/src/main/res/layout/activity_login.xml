@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/registTx"
-        android:id="@+id/registBtn"
+        android:id="@+id/regist_registBtn"
         android:layout_below="@+id/passwdETx"
         android:layout_toRightOf="@+id/loginBtn"
         android:layout_toEndOf="@+id/loginBtn" />
