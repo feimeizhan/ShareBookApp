@@ -1,4 +1,4 @@
-package com.justdoit.sharebook.activity;
+package com.justdoit.sharebook.fragment;
 
 import android.app.Fragment;
 import android.os.AsyncTask;

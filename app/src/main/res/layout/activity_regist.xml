@@ -1,5 +1,5 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/regist_fragment"
-    android:name="com.justdoit.sharebook.activity.RegistActivityFragment"
+    android:name="com.justdoit.sharebook.fragment.RegistActivityFragment"
     tools:layout="@layout/fragment_regist" android:layout_width="match_parent"
     android:layout_height="match_parent" />
