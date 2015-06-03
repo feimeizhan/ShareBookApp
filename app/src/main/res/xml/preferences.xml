@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/title_account_settings" >
+        <EditTextPreference
+            android:title="@string/title_edit_account_settings"
+            android:key="username"
+            android:summary="haha" />
+
+        <com.justdoit.sharebook.customized.MyDialogPreference
+            android:key="isLogin"
+            android:dialogTitle="@string/title_logout_account_dialog_settings"
+            android:dialogMessage="@string/message_dialog_confirm_logout"
+            android:title="@string/title_logout_account_dialog_settings"
+            android:negativeButtonText="@string/cancel_text"
+            android:positiveButtonText="@string/confirm_text"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_general_settings">
+        <Preference android:title="test web">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://www.baidu.com"/>
+        </Preference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/title_about_settings">
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -7,11 +7,11 @@ import android.view.MenuItem;
 
 import com.justdoit.sharebook.R;
 
-public class RegistActivity extends Activity {
+public class SettingsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_regist);
+        setContentView(R.layout.activity_settings);
     }
 }

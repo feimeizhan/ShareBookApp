@@ -32,10 +32,8 @@ import java.util.Map;
 public class HttpUtil {
     private static final String TAG = "HTTP_UTIL";
     private static CookieManager cookieManager;
-    private static SharedPreferences sharedPreferences;
-    private static final String COOKIE_STORE_NAME = "userInfoPrefs";
     private static String token = null;
-    private static final String tokenKey = "_xsrf";
+    private static final String TOKEN_KEY = "_xsrf";
     private static final int MAX_SIZE_BUF = 1024;
 
 
@@ -121,8 +119,8 @@ public class HttpUtil {
                 MyApp myApp = (MyApp)context.getApplicationContext();
                 myApp.setIsLogin(true);
 
-                sharedPreferences = context.getSharedPreferences(COOKIE_STORE_NAME, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
+                SharedPreferences sp = myApp.getSp();
+                SharedPreferences.Editor editor = sp.edit();
 
                 for (HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
                     Log.e(TAG, "Name-->" + cookie.getName() + " value-->" + cookie.getValue());
@@ -182,8 +180,8 @@ public class HttpUtil {
 
         try {
             for (HttpCookie cookie : cookieManager.getCookieStore().get(url.toURI())) {
-                if (tokenKey.equals(cookie.getName())) {
-                    token = tokenKey + "=" + cookie.getValue();
+                if (TOKEN_KEY.equals(cookie.getName())) {
+                    token = TOKEN_KEY + "=" + cookie.getValue();
                     break;
                 }
             }
@@ -193,7 +191,7 @@ public class HttpUtil {
 
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     for (String cookie : connection.getHeaderFields().get("Set-Cookie")) {
-                        if (cookie.indexOf(tokenKey) == 0) {
+                        if (cookie.indexOf(TOKEN_KEY) == 0) {
                             token = cookie.substring(0, cookie.indexOf(";"));
                         }
                     }
@@ -226,6 +224,13 @@ public class HttpUtil {
     }
 
     /**
+     * 清理全部cookies
+     */
+    public static void clearCookies() {
+        cookieManager.getCookieStore().removeAll();
+    }
+
+    /**
      * 保存用户登录cookie的自定义cookiestore
      */
     public static class PersistentCookieStore implements CookieStore {
@@ -234,7 +239,7 @@ public class HttpUtil {
         public PersistentCookieStore(Context context, URI uri) {
             cookieStore = new CookieManager().getCookieStore();
 
-            SharedPreferences sp = context.getSharedPreferences(COOKIE_STORE_NAME, Context.MODE_PRIVATE);
+            SharedPreferences sp = context.getSharedPreferences(MyApp.USER_INFO_PREFS, Context.MODE_PRIVATE);
 
             for (Map.Entry<String, ?> entry : sp.getAll().entrySet()) {
                 HttpCookie cookie = new HttpCookie(entry.getKey(), String.valueOf(entry.getValue()));

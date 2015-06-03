@@ -27,6 +27,10 @@
             android:name=".activity.RegistActivity"
             android:label="@string/title_activity_regist" >
         </activity>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>

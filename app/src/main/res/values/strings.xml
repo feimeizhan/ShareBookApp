@@ -11,4 +11,17 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_regist">注册</string>
     <string name="confirm_passwdTx">确认密码</string>
+    <string name="title_activity_settings">设置</string>
+
+    <string name="title_account_settings">账号</string>
+    <string name="title_edit_account_settings">编辑账号</string>
+    <string name="title_logout_account_dialog_settings">注销</string>
+    <string name="title_dialog_confirm_logout">确认注销</string>
+    <string name="message_dialog_confirm_logout">注销将删除本地登录的信息</string>
+
+    <string name="cancel_text">取消</string>
+    <string name="confirm_text">确认</string>
+    
+    <string name="title_general_settings">常规</string>
+    <string name="title_about_settings">关于</string>
 </resources>
