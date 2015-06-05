@@ -22,7 +22,7 @@ public class MyDialogPreference extends DialogPreference {
     protected void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
             MyApp myApp = (MyApp)getContext().getApplicationContext();
-            myApp.getSp().edit().clear();
+            myApp.getSp().edit().clear().commit();
             myApp.setIsLogin(false);
             HttpUtil.clearCookies();
             ((Activity) getContext()).finish();

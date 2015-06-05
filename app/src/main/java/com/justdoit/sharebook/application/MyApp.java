@@ -2,6 +2,7 @@ package com.justdoit.sharebook.application;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /**
  * 1.存储application全局变量，比如，cookiestore
@@ -11,7 +12,9 @@ public class MyApp extends Application {
 
     private boolean isLogin = false;
     public final static String USER_INFO_PREFS = "UserInfoPrefs";
+    public final static String IS_LOGIN = "isLogin";
     private SharedPreferences sp;
+    private final String TAG = "MYAPP";
 
     public SharedPreferences getSp() {
         return sp;
@@ -31,6 +34,6 @@ public class MyApp extends Application {
 
         sp = getSharedPreferences(USER_INFO_PREFS, MODE_PRIVATE);
 
-        isLogin = sp.getBoolean("isLogin", false);
+        isLogin = sp.getBoolean(IS_LOGIN, false);
     }
 }

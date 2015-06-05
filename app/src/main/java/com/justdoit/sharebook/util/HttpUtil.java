@@ -127,6 +127,7 @@ public class HttpUtil {
                     editor.putString(cookie.getName(), cookie.getValue());
                 }
 
+                editor.putBoolean(MyApp.IS_LOGIN, true);
                 editor.commit();
 //                Log.e(TAG, result);
                 in.close();
@@ -227,7 +228,9 @@ public class HttpUtil {
      * 清理全部cookies
      */
     public static void clearCookies() {
-        cookieManager.getCookieStore().removeAll();
+        if (cookieManager != null) {
+            cookieManager.getCookieStore().removeAll();
+        }
     }
 
     /**
