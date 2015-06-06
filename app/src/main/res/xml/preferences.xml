@@ -2,9 +2,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:title="@string/title_account_settings" >
-        <EditTextPreference
+        <Preference
             android:title="@string/title_edit_account_settings"
             android:key="username"
+            android:defaultValue="zhan"
             android:summary="haha" />
 
         <com.justdoit.sharebook.customized.MyDialogPreference

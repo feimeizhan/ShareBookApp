@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.justdoit.sharebook.R;
+import com.justdoit.sharebook.activity.user.LoginActivity;
+import com.justdoit.sharebook.activity.user.RegistActivity;
+import com.justdoit.sharebook.activity.user.SettingsActivity;
 import com.justdoit.sharebook.application.MyApp;
 
 public class MainActivity extends Activity implements View.OnClickListener{

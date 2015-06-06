@@ -1,4 +1,4 @@
-package com.justdoit.sharebook.activity;
+package com.justdoit.sharebook.activity.user;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,11 +7,11 @@ import android.view.MenuItem;
 
 import com.justdoit.sharebook.R;
 
-public class SettingsActivity extends Activity {
+public class RegistActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_regist);
     }
 }
