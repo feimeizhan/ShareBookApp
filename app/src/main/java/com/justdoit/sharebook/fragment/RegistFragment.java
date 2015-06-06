@@ -18,7 +18,7 @@ import com.justdoit.sharebook.util.HttpUtil;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RegistActivityFragment extends Fragment implements View.OnClickListener{
+public class RegistFragment extends Fragment implements View.OnClickListener{
 
     private Button registBtn;
     private EditText usernameETx;
@@ -34,7 +34,7 @@ public class RegistActivityFragment extends Fragment implements View.OnClickList
 
     private TextView tv;
 
-    public RegistActivityFragment() {
+    public RegistFragment() {
     }
 
     @Override

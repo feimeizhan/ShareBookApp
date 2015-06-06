@@ -1,29 +1,16 @@
 package com.justdoit.sharebook.activity.user;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.justdoit.sharebook.R;
-import com.justdoit.sharebook.application.HttpConstant;
-import com.justdoit.sharebook.util.HttpUtil;
+import com.justdoit.sharebook.fragment.LoginFragment;
+import com.justdoit.sharebook.fragment.RegistFragment;
 
-public class LoginActivity extends Activity implements View.OnClickListener{
-
-    private Button loginButton;
-    private Button registButton;
-    private TextView testTv;
-    private EditText usernameETx;
-    private EditText passwdETx;
-
-    private final String TAG = "LOGIN_ACTIVITY";
-
-    private String params = null;
+public class LoginActivity extends Activity implements LoginFragment.OnRegistClickListener{
+    FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,111 +19,21 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         init();
     }
 
-    public void init() {
-        testTv = (TextView) findViewById(R.id.testTv);
-
-        usernameETx = (EditText) findViewById(R.id.usernameETx);
-        passwdETx = (EditText) findViewById(R.id.passwdETx);
-
-        loginButton = (Button) findViewById(R.id.loginBtn);
-        registButton = (Button) findViewById(R.id.registBtn);
-
-        loginButton.setOnClickListener(this);
-        registButton.setOnClickListener(this);
+    private void init() {
+        LoginFragment loginFragment = new LoginFragment();
+        fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.login_container, loginFragment);
+        ft.commit();
     }
 
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.loginBtn:
-                if (checkAndSetParams()) {
-//                    Log.e(TAG, params);
-                    new loginTask().execute(HttpConstant.LOGIN_URL, params);
-                }
-                break;
-            case R.id.registBtn:
-                new openMainTask().execute(HttpConstant.ROOT_URL);
-                break;
-        }
-    }
-
-    /**
-     * 检测用户名和密码是否为空
-     * @return true表示都非空
-     */
-    public boolean checkAndSetParams() {
-        if (!"".equals(usernameETx.getText().toString().trim())){
-            params = "username=" + usernameETx.getText().toString().trim();
-
-            if (!"".equals(passwdETx.getText().toString())) {
-                params += HttpConstant.SEPARATOR + "passwd=" + passwdETx.getText().toString();
-
-                return true;
-            }else {
-                Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
-            }
-        }else {
-            Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
-        }
-
-        return false;
-
-    }
-
-    public class openMainTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            return HttpUtil.HttpGET(LoginActivity.this, params[0]);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            testTv.setText(s);
-        }
-    }
-
-    /**
-     * 传递两个参数，第一个是网址，第二个是传递的数据
-     */
-    public class loginTask extends AsyncTask<String, Void, String>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Toast.makeText(LoginActivity.this, "正在登录", Toast.LENGTH_SHORT).show();
-        }
-
-        /**
-         * Override this method to perform a computation on a background thread. The
-         * specified parameters are the parameters passed to {@link #execute}
-         * by the caller of this task.
-         * <p/>
-         * This method can call {@link #publishProgress} to publish updates
-         * on the UI thread.
-         *
-         * @param params The parameters of the task.
-         * @return A result, defined by the subclass of this task.
-         * @see #onPreExecute()
-         * @see #onPostExecute
-         * @see #publishProgress
-         */
-
-
-        @Override
-        protected String doInBackground(String... params) {
-            return HttpUtil.login(LoginActivity.this, params[0], params[1]);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            testTv.setText(s);
-        }
+    public void OnRegistClick() {
+        RegistFragment registFragment = new RegistFragment();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.replace(R.id.login_container, registFragment);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }

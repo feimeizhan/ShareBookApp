@@ -25,4 +25,7 @@
     <string name="title_general_settings">常规</string>
     <string name="title_about_settings">关于</string>
     <string name="title_activity_user_info">UserInfoActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

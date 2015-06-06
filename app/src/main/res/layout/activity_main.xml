@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:text="添加图书"
         android:id="@+id/main_addbook_btn"
-        android:layout_below="@+id/main_regist_btn"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/main_login_btn" />
 
     <Button
         android:layout_width="wrap_content"
@@ -22,11 +22,4 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/registTx"
-        android:id="@+id/main_regist_btn"
-        android:layout_below="@+id/main_login_btn"
-        android:layout_centerHorizontal="true" />
 </RelativeLayout>

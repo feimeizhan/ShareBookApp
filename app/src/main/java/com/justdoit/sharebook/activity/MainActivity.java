@@ -11,14 +11,12 @@ import android.widget.Toast;
 
 import com.justdoit.sharebook.R;
 import com.justdoit.sharebook.activity.user.LoginActivity;
-import com.justdoit.sharebook.activity.user.RegistActivity;
 import com.justdoit.sharebook.activity.user.SettingsActivity;
 import com.justdoit.sharebook.application.MyApp;
 
 public class MainActivity extends Activity implements View.OnClickListener{
 
     private Button mainLoginBtn;
-    private Button mainRegistBtn;
     private MyApp myApp;
 
     /**
@@ -28,9 +26,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         myApp = (MyApp) getApplicationContext();
 
         mainLoginBtn = (Button) findViewById(R.id.main_login_btn);
-        mainRegistBtn = (Button) findViewById(R.id.main_regist_btn);
-
-        mainRegistBtn.setOnClickListener(this);
         mainLoginBtn.setOnClickListener(this);
     }
 
@@ -76,10 +71,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
-                break;
-            case R.id.main_regist_btn:
-                Intent intent = new Intent(MainActivity.this, RegistActivity.class);
-                startActivity(intent);
                 break;
         }
     }
