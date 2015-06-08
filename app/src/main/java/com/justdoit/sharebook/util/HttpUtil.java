@@ -127,7 +127,6 @@ public class HttpUtil {
                     editor.putString(cookie.getName(), cookie.getValue());
                 }
 
-                editor.putBoolean(MyApp.IS_LOGIN, true);
                 editor.commit();
 //                Log.e(TAG, result);
                 in.close();
@@ -246,6 +245,9 @@ public class HttpUtil {
 
             for (Map.Entry<String, ?> entry : sp.getAll().entrySet()) {
                 HttpCookie cookie = new HttpCookie(entry.getKey(), String.valueOf(entry.getValue()));
+                cookie.setVersion(0);
+                cookie.setPath("/");
+                cookie.setDomain(uri.getHost());
                 cookieStore.add(uri, cookie);
             }
         }

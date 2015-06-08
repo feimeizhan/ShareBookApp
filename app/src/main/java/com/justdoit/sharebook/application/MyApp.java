@@ -12,7 +12,7 @@ public class MyApp extends Application {
 
     private boolean isLogin = false;
     public final static String USER_INFO_PREFS = "UserInfoPrefs";
-    public final static String IS_LOGIN = "isLogin";
+    public final static String USER_NAME = "username";
     private SharedPreferences sp;
     private final String TAG = "MYAPP";
 
@@ -34,6 +34,10 @@ public class MyApp extends Application {
 
         sp = getSharedPreferences(USER_INFO_PREFS, MODE_PRIVATE);
 
-        isLogin = sp.getBoolean(IS_LOGIN, false);
+        if (sp.getString("username", null) != null) {
+            isLogin = true;
+        } else {
+            isLogin = false;
+        }
     }
 }
