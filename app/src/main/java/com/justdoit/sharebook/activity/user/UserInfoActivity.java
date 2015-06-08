@@ -9,11 +9,20 @@ import android.widget.TextView;
 
 import com.justdoit.sharebook.R;
 import com.justdoit.sharebook.application.HttpConstant;
+import com.justdoit.sharebook.business.UserInfoBO;
+import com.justdoit.sharebook.entity.UserInfo;
 import com.justdoit.sharebook.util.HttpUtil;
 
 public class UserInfoActivity extends Activity {
 
-    private TextView textView;
+    private TextView username;
+    private TextView major;
+    private TextView academy;
+    private TextView school;
+    private TextView sex;
+    private TextView id;
+    private TextView phonenum;
+    private TextView registDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +31,18 @@ public class UserInfoActivity extends Activity {
 
         init();
 
-        new GetUserInfoTask().execute(HttpConstant.USER_INFO_URL);
+        new GetUserInfoTask().execute();
     }
 
     public void init() {
-        textView = (TextView) findViewById(R.id.testv);
+        username = (TextView) findViewById(R.id.userinfo_usernameTx);
+        major = (TextView) findViewById(R.id.userinfo_majorTx);
+        academy = (TextView) findViewById(R.id.userinfo_academyTx);
+        sex = (TextView) findViewById(R.id.userinfo_sexTx);
+        school = (TextView) findViewById(R.id.userinfo_schoolTx);
+        id = (TextView) findViewById(R.id.userinfo_idTx);
+        phonenum = (TextView) findViewById(R.id.userinfo_phonenumTx);
+        registDate = (TextView) findViewById(R.id.userinfo_registdateTx);
     }
 
     @Override
@@ -51,17 +67,30 @@ public class UserInfoActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class GetUserInfoTask extends AsyncTask<String, Void, String> {
+    public class GetUserInfoTask extends AsyncTask<Void, Void, UserInfo> {
+
+        UserInfoBO userInfoBO = new UserInfoBO();
 
         @Override
-        protected String doInBackground(String... params) {
-            return HttpUtil.HttpGET(UserInfoActivity.this, params[0]);
+        protected UserInfo doInBackground(Void... params) {
+
+            return userInfoBO.getUserInfo(UserInfoActivity.this);
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            textView.setText(s);
+        protected void onPostExecute(UserInfo userInfo) {
+            super.onPostExecute(userInfo);
+
+            if (userInfo != null) {
+                username.append(userInfo.getUserName());
+                school.append(userInfo.getSchool());
+                academy.append(userInfo.getAcademy());
+                sex.append(userInfo.getSex());
+                phonenum.append(userInfo.getPhoneNum());
+                id.append(String.valueOf(userInfo.getId()));
+                major.append(userInfo.getMajor());
+                registDate.append(userInfo.getRegistDate());
+            }
         }
     }
 }
