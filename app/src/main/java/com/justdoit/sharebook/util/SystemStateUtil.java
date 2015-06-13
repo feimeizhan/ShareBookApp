@@ -29,5 +29,16 @@ public class SystemStateUtil {
         }
         return false;
     }
+
+    /**
+     * 检测是否有网络(2G/3G/4G/wifi)
+     * @param context
+     * @return
+     */
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetInfo != null && activeNetInfo.isConnectedOrConnecting();
+    }
 }
 

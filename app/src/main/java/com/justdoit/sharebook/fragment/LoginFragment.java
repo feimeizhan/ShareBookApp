@@ -2,6 +2,7 @@ package com.justdoit.sharebook.fragment;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.justdoit.sharebook.R;
 import com.justdoit.sharebook.application.HttpConstant;
 import com.justdoit.sharebook.util.HttpUtil;
+import com.justdoit.sharebook.util.SystemStateUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -120,21 +122,38 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
      */
     public class loginTask extends AsyncTask<String, Void, String>{
 
+        ProgressDialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(getActivity(), "正在登录", Toast.LENGTH_SHORT).show();
+            if (!SystemStateUtil.isNetworkAvailable(getActivity())) {
+                cancel(true);
+            } else {
+                progressDialog = ProgressDialog.show(getActivity(), null, "正在登录(￣▽￣)", true, true);
+            }
         }
 
 
         @Override
         protected String doInBackground(String... params) {
-            return HttpUtil.login(getActivity(), params[0], params[1]);
+            if (!isCancelled()) {
+                return HttpUtil.login(getActivity(), params[0], params[1]);
+            }else {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            progressDialog.dismiss();
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            progressDialog.dismiss();
             testTv.setText(s);
         }
     }

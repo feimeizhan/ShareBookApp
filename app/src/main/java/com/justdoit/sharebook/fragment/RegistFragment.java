@@ -1,6 +1,7 @@
 package com.justdoit.sharebook.fragment;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.justdoit.sharebook.R;
 import com.justdoit.sharebook.application.HttpConstant;
 import com.justdoit.sharebook.util.HttpUtil;
+import com.justdoit.sharebook.util.SystemStateUtil;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -94,15 +96,39 @@ public class RegistFragment extends Fragment implements View.OnClickListener{
 
     public class registTask extends AsyncTask<String, Void, String> {
 
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (!SystemStateUtil.isNetworkAvailable(getActivity())) {
+                cancel(true);
+            } else {
+                progressDialog = ProgressDialog.show(getActivity(), null, "正在注册o(^▽^)o", true, true);
+            }
+        }
+
         @Override
         protected String doInBackground(String... params) {
-            return HttpUtil.login(getActivity(), params[0], params[1]);
+            if (!isCancelled()) {
+                return HttpUtil.login(getActivity(), params[0], params[1]);
+            } else {
+                return null;
+            }
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            progressDialog.dismiss();
             tv.setText(s);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            progressDialog.dismiss();
         }
     }
 }
